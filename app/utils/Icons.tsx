@@ -18,8 +18,29 @@ import {
   UsersRound,
   CalendarDays,
   SunDim,
+  
+  Vote,
 } from "lucide-react";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPoll,
+  faChartBar,
+  faFlag,
+  faVoteYea,
+  faPollH,
+  faChartPie,
+  faUserCheck,
+  faDownload,
+} from "@fortawesome/free-solid-svg-icons";
+export const voteIcon = <Vote size={20} />;
+export const downloadIcon = <FontAwesomeIcon icon={faDownload} />;
+export const flagIcon = <FontAwesomeIcon icon={faFlag} />;
+export const voteYesIcon = <FontAwesomeIcon icon={faVoteYea} />;;
+export const pollHIcon = <FontAwesomeIcon icon={faPollH} />;
+export const chartPieIcon = <FontAwesomeIcon icon={faChartPie} />;
+export const userCheckIcon = <FontAwesomeIcon icon={faUserCheck} />;
+export const pollIcon = <FontAwesomeIcon icon={faPoll} />;
+export const histogramIcon = <FontAwesomeIcon icon={faChartBar} />;
 export const commandIcon = <Command size={14} />;
 export const github = <Github size={20} />;
 export const searchIcon = <Search />;

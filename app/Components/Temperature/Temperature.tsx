@@ -86,9 +86,19 @@ return (
           className="hidden md:block rounded-lg"
           alt="Armoiries du Cameroun"
         />
+
+        <Image
+          src="/Armoiries_CMR.png"
+          width={75}
+          height={10}
+          className="block md:hidden"
+          alt="Armoiries du Cameroun"
+        />
       </div>
       <div className="text-center mt-3">
-        <p className="capitalize text-lg font-medium">Paix-Travail-Patrie</p>
+        <p className="capitalize text-lg font-medium dark:text-gray-200">
+          Paix-Travail-Patrie
+        </p>
       </div>
     </div>
   </div>

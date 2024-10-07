@@ -153,6 +153,7 @@ footer:hover .footer-text > img {
 
   .mapbox-con > div:first-child {
     height: 24rem;
+    width: 100%;
     flex: initial;
   }
 }

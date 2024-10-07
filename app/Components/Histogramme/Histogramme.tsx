@@ -1,106 +1,90 @@
-"use client";
 import React from "react";
 import { useGlobalContext } from "@/app/context/globalContext";
-import { clearSky, cloudy, drizzleIcon, rain, snow } from "@/app/utils/Icons";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
-import moment from "moment";
-import { kelvinToCelsius } from "@/app/utils/misc";
+import { pollIcon } from '../../utils/Icons';
 
-function Histogramme() {
-  const { forecast, fiveDayForecast } = useGlobalContext();
+const colors = ["#FF6633", "#FFB399", "#FF33FF", "#3366E6", "#00a64f"];
 
-  const { weather } = forecast;
+interface CandidateData {
+  main: { temp_min: number; temp_max: number };
+  dt: number;
+}
+
+interface ProcessedData {
+  candidate: string;
+  votes: number;
+}
+
+function processData(
+  candidateData: CandidateData[],
+  candidateNames: string[]
+): ProcessedData[] {
+  return candidateData.map((data, index) => {
+    const candidateName = candidateNames[index % candidateNames.length];
+    const totalVotes = data.main.temp_min;
+    return {
+      candidate: candidateName,
+      votes: totalVotes,
+    };
+  });
+}
+
+const Histogramme: React.FC = () => {
+  const { fiveDayForecast } = useGlobalContext();
   const { city, list } = fiveDayForecast;
 
   if (!fiveDayForecast || !city || !list) {
     return <Skeleton className="h-[12rem] w-full" />;
   }
 
-  if (!forecast || !weather) {
-    return <Skeleton className="h-[12rem] w-full" />;
-  }
+  const candidateNames = [
+    "Candidat A",
+    "Candidat B",
+    "Candidat C",
+    "Candidat D",
+    "Candidat E",
+  ];
 
-  const today = new Date();
-  const todayString = today.toISOString().split("T")[0];
+  const processedCandidates = processData(list, candidateNames).slice(0, 5);
 
-  //filter the list for today's forecast
-  const todaysForecast = list.filter(
-    (forecast: { dt_txt: string; main: { temp: number } }) => {
-      return forecast.dt_txt.startsWith(todayString);
-    }
+  const totalVotes = processedCandidates.reduce(
+    (acc, candidate) => acc + candidate.votes,
+    0
   );
 
-  const { main: weatherMain } = weather[0];
-
-  if (todaysForecast.length < 1) {
-    return (
-      <Skeleton className="h-[12rem] w-full col-span-full sm-2:col-span-2 md:col-span-2 xl:col-span-2" />
-    );
-  }
-
-  const getIcon = () => {
-    switch (weatherMain) {
-      case "Drizzle":
-        return drizzleIcon;
-      case "Rain":
-        return rain;
-      case "Snow":
-        return snow;
-      case "Clear":
-        return clearSky;
-      case "Clouds":
-        return cloudy;
-      default:
-        return clearSky;
-    }
-  };
-
   return (
-    <div
-      className="pt-6 px-4 h-[12rem] border rounded-lg flex flex-col gap-8
-       dark:bg-dark-grey shadow-sm dark:shadow-none col-span-full sm-2:col-span-2 md:col-span-2 xl:col-span-2"
-    >
-      <div className="h-full flex gap-10 overflow-hidden">
-        {todaysForecast.length < 1 ? (
-          <div className="flex justify-center items-center">
-            <h1 className="text-[3rem] line-through text-rose-500">
-              No Data Available!
-            </h1>
+    <div className="rounded-lg border shadow-md p-8 dark:text-gray-100">
+      <h2 className="text-2xl font-medium mb-4 ">
+        {pollIcon}{" " }
+        <span className="underline">Histogramme des Votes</span>
+      </h2>
+      <div className="flex flex-col gap-4">
+        {processedCandidates.map((candidateData, i) => (
+          <div key={i} className="flex items-center gap-4 text-nowrap">
+            <div style={{ width: "120px" }}>{candidateData.candidate}:</div>
+            <div className="flex items-center w-full">
+              <div className="w-3/4 bg-gray-200 h-8 rounded-lg relative">
+                <div
+                  className="h-full rounded-lg"
+                  style={{
+                    width: `${(candidateData.votes / totalVotes) * 100}%`,
+                    backgroundColor: colors[i % colors.length],
+                  }}
+                >
+                  <span className="absolute right-2 text-xs text-gray-600">
+                    {((candidateData.votes / totalVotes) * 100).toFixed(3)}%
+                  </span>
+                </div>
+              </div>
+              <div className="ml-2 dark:text-gray-200 text-nowrap">
+                {candidateData.votes} K
+              </div>
+            </div>
           </div>
-        ) : (
-          <div className="w-full">
-            <Carousel>
-              <CarouselContent>
-                {todaysForecast.map(
-                  (forecast: { dt_txt: string; main: { temp: number } }) => {
-                    return (
-                      <CarouselItem
-                        key={forecast.dt_txt}
-                        className="flex flex-col gap-4 basis-[8.5rem] cursor-grab"
-                      >
-                        <p className=" text-gray-300">
-                          {moment(forecast.dt_txt).format("HH:mm")}
-                        </p>
-                        <p>{getIcon()}</p>
-                        <p className="mt-4">
-                          {kelvinToCelsius(forecast.main.temp)}°C
-                        </p>
-                      </CarouselItem>
-                    );
-                  }
-                )}
-              </CarouselContent>
-            </Carousel>
-          </div>
-        )}
+        ))}
       </div>
     </div>
   );
-}
+};
 
 export default Histogramme;

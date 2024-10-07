@@ -14,14 +14,18 @@ function Population() {
   }
 
   return (
-    <div className="pt-6 pb-5 px-4 h-[12rem] border rounded-lg flex flex-col gap-8 dark:bg-dark-grey shadow-sm dark:shadow-none">
+    <div className="pt-6 pb-5 px-4 h-[12rem] border rounded-lg flex flex-col gap-4 dark:bg-dark-grey shadow-sm dark:shadow-none">
       <div className="top">
-        <h2 className="flex items-center gap-2 font-medium">
+        <h2 className="flex items-center gap-2 font-medium underline">
           {people} Population
         </h2>
-        <p className="pt-4 text-2xl">{formatNumber(city.population)}</p>
+        <p className="pt-4 text-2xl dark:text-gray-200 ">
+          {formatNumber(city.population)}
+        </p>
       </div>
-      <p className="text-sm">Latest UN population data for {city.name}.</p>
+      <p className="text-sm ">
+        Dernières données démographiques de l'ONU pour {city.name}.
+      </p>
     </div>
   );
 }

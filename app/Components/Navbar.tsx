@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { github } from "../utils/Icons";
+import { downloadIcon, github } from "../utils/Icons";
 import ThemeDropdown from "./ThemeDropdown/ThemeDropdown";
 import SearchDialog from "./SearchDialog/SearchDialog";
 import { useGlobalContext } from "../context/globalContext";
@@ -26,7 +26,7 @@ function Navbar() {
               router.push("https//github.com");
             }}
           >
-            {github} Source Code
+            {downloadIcon} Télécharger PDF
           </Button>
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useGlobalContext } from "@/app/context/globalContext";
-import { calender } from "@/app/utils/Icons";
+import {  histogramIcon } from "@/app/utils/Icons";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -50,21 +50,24 @@ function Resultat() {
   return (
     <div className="pt-6 pb-5 px-4 flex-1 border rounded-lg flex flex-col justify-between dark:bg-dark-grey shadow-sm dark:shadow-none">
       <div>
-        <h2 className="text-2xl font-semibold mb-4">
-          {calender} Résultats des Élections à {city.name}
+        <h2 className="text-2xl font-medium mb-4 ">
+          {histogramIcon}{" "}
+          <span className="underline">
+            {" "}
+            Résultats des Élections à {city.name}
+          </span>
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-2">
           {processedCandidates.map((candidateData, i) => (
-            <div key={i} className="bg-white rounded-lg shadow-md p-4 ">
-              <p className="text-lg font-semibold mb-2 dark:text-black">
+            <div key={i} className="dark:text-white rounded-lg shadow-md p-4 ">
+              <p className="text-lg font-semibold mb-2">
                 {candidateData.candidate}
               </p>
               <div className="flex items-center justify-between ">
-                <p className="text-sm text-gray-800 ">
-                  Total de Voix: {candidateData.votes}
+                <p className="text-sm ">
+                  Total de Voix: {candidateData.votes} K
                 </p>
-               
               </div>
             </div>
           ))}
