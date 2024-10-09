@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
+import Histogramme from "../Histogramme/Histogramme";
 
 // Create styles
 const styles = StyleSheet.create({
@@ -23,6 +24,7 @@ export default function MyDocumentPdf() {
        <Page size="A4" style={styles.page}>
          <View style={styles.section}>
            <Text>Section #1</Text>
+           <Histogramme/>
          </View>
          <View style={styles.section}>
            <Text>Section #2</Text>

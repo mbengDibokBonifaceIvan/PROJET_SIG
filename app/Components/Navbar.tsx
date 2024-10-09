@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -6,6 +5,13 @@ import { downloadIcon, github } from "../utils/Icons";
 import ThemeDropdown from "./ThemeDropdown/ThemeDropdown";
 import SearchDialog from "./SearchDialog/SearchDialog";
 import { useGlobalContext } from "../context/globalContext";
+import jsPDF from "jspdf";
+
+function generatePDF() {
+  const pdf = new jsPDF();
+  pdf.text("Bonjour", 10, 10); // Ajoute le texte "Bonjour" à la position (10, 10) dans le PDF
+  pdf.save("document.pdf"); // Télécharge le PDF avec le nom "document.pdf"
+}
 
 function Navbar() {
   const router = useRouter();
@@ -22,9 +28,7 @@ function Navbar() {
 
           <Button
             className="source-code-btn flex items-center gap-2"
-            onClick={() => {
-              router.push("https//github.com");
-            }}
+            onClick={generatePDF}
           >
             {downloadIcon} Télécharger PDF
           </Button>

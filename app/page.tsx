@@ -18,6 +18,10 @@ import FiveDayForecast from "./Components/FiveDayForecast/FiveDayForecast";
 import { useGlobalContextUpdate } from "./context/globalContext";
 import Histogramme from "./Components/Histogramme/Histogramme";
 import Resultat from "./Components/Results/Resultat";
+import html2canvas from "html2canvas";
+import React, { useRef } from "react";
+import { jsPDF } from "jspdf";
+
 
 export default function Home() {
   const { setActiveCityCoords } = useGlobalContextUpdate();
@@ -30,7 +34,33 @@ export default function Home() {
       behavior: "smooth",
     });
   };
+const histogramRef = useRef<HTMLDivElement | null>(null);
+const mapBoxRef = useRef<HTMLDivElement | null>(null);
 
+  function generatePDF() {
+   if (!histogramRef.current || !mapBoxRef.current) {
+    return;
+  }
+
+    const pdf = new jsPDF();
+
+    // Capture le contenu du composant Histogramme en tant qu'image
+  html2canvas(histogramRef.current).then((histogramCanvas) => {
+    const histogramImg = histogramCanvas.toDataURL("image/png");
+
+    // Capture le contenu de l'élément mapBox en tant qu'image
+    html2canvas(mapBoxRef.current!).then((mapBoxCanvas) => {
+      const mapBoxImg = mapBoxCanvas.toDataURL("image/png");
+
+      // Ajoute les deux images au PDF
+      pdf.addImage(histogramImg, "PNG", 15, 15, 180, 100); // Ajoute l'image de l'histogramme
+          pdf.addImage(mapBoxImg, "PNG", 15, 130, 180, 100); // Ajoute l'image de mapBox sur une nouvelle page
+
+      pdf.save("images.pdf"); // Télécharge le PDF avec le nom "images.pdf" contenant les deux images
+    });
+  });
+
+  }
   return (
     <main className="mx-[1rem] lg:mx-[2rem] xl:mx-[6rem] 2xl:mx-[8rem] m-auto">
       <Navbar />
@@ -38,6 +68,12 @@ export default function Home() {
         <div className="flex flex-col gap-4 w-full min-w-[18rem] md:w-[35rem]">
           <Temperature />
           <Resultat />
+          <button
+            onClick={generatePDF}
+            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
+          >
+            Télécharger les informations en PDF
+          </button>
         </div>
         <div className="flex flex-col w-full">
           <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -50,7 +86,7 @@ export default function Home() {
             <div className="h-full">
               <Sunset />
             </div>
-            <div className="h-full lg:col-span-2">
+            <div className="h-full lg:col-span-2" ref={histogramRef}>
               <Histogramme />
             </div>
             <div className="h-full  lg:row-span-2">
@@ -58,7 +94,7 @@ export default function Home() {
             </div>
           </div>
           <div className="mapbox-con mt-4 flex gap-4 flex-1">
-            <div className="w-3/4 h-full">
+            <div className="w-2/3 h-full" ref={mapBoxRef}>
               <Mapbox />
             </div>
             <div className="states flex flex-col gap-3 flex-1 h-full">
