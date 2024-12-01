@@ -21,6 +21,16 @@ public class Vote {
     @ManyToOne
     private Candidat candidat;
 
+    public Vote(Long id, Resultat resultat, Candidat candidat) {
+        this.id = id;
+        this.resultat = resultat;
+        this.candidat = candidat;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setResultat(Resultat resultat) {
         this.resultat = resultat;
     }

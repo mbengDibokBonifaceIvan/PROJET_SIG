@@ -14,13 +14,13 @@ import com.example.SIG.Repository.CandidatRepository;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
-@RequestMapping("/api/candidat")
+@RequestMapping("/api")
 public class CandidatController {
 
     @Autowired
     private CandidatRepository candidatRepository;
 
-    @PostMapping
+    @PostMapping("/addCandidat")
     public ResponseEntity<Candidat> createCandidat(@RequestBody Candidat candidat) {
         Candidat savedCandidat = candidatRepository.save(candidat);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCandidat);

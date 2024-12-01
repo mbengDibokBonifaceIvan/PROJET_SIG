@@ -24,6 +24,19 @@ public class Resultat {
 
   private int nombreDeVotants;
 
+  // Constructeur par défaut
+  public Resultat() {
+    // Vous pouvez initialiser des valeurs par défaut ici si nécessaire
+  }
+
+
+  public Resultat(Long id, Session session, Arrondissement arrondissement, int nombreDInscrits, int nombreDeVotants) {
+    this.id = id;
+    this.session = session;
+    this.arrondissement = arrondissement;
+    this.nombreDInscrits = nombreDInscrits;
+    this.nombreDeVotants = nombreDeVotants;
+  }
 
   public Long getId() {
     return id;

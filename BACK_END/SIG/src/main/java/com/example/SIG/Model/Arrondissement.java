@@ -17,9 +17,9 @@ public class Arrondissement {
 
   private String nom;
 
-  private double longitude;
+  //private double longitude;
 
-  private double latitude;
+  //private double latitude;
 
   public Long getId() {
     return id;
