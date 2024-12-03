@@ -1,41 +1,47 @@
 package com.example.SIG.Controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.example.SIG.Model.Arrondissement;
-import com.example.SIG.Model.Resultat;
-import com.example.SIG.Model.Session;
-import com.example.SIG.Repository.ArrondissementRepository;
+import com.example.SIG.Model.Resultats;
 import com.example.SIG.Repository.ResultatsRepository;
-import com.example.SIG.Repository.SessionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 
 @RestController
-@CrossOrigin("http://localhost:3000")
-@RequestMapping("/api/resultats")
+@RequestMapping("/resultats")
 public class ResultatsController {
 
     @Autowired
     private ResultatsRepository resultatsRepository;
-    @Autowired
-    private SessionRepository sessionRepository;
-    @Autowired
-    private ArrondissementRepository arrondissementRepository;
 
-    @PostMapping
-    public ResponseEntity<Resultat> createResultats(@RequestBody Resultat resultats) {
-        Session session = sessionRepository.findById(resultats.getSession().getId()).orElseThrow();
-        Arrondissement arrondissement = arrondissementRepository.findById(resultats.getArrondissement().getId())
-                .orElseThrow();
-        resultats.setSession(session);
-        resultats.setArrondissement(arrondissement);
-        Resultat savedResultats = resultatsRepository.save(resultats);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedResultats);
+    @GetMapping("/all")
+    public List<Resultats> getAllResultats() {
+        return resultatsRepository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Resultats getResultatById(@PathVariable Long id) {
+        return resultatsRepository.findById(id).orElse(null);
+    }
+
+    @PostMapping("/addResultat")
+    public Resultats createResultat(@RequestBody Resultats resultat) {
+        return resultatsRepository.save(resultat);
+    }
+
+    @PutMapping("/editResultat/{id}")
+    public Resultats updateResultat(@PathVariable Long id, @RequestBody Resultats resultat) {
+        if (resultatsRepository.existsById(id)) {
+            resultat.setId_résultat(id);
+            return resultatsRepository.save(resultat);
+        } else {
+            return null; // Gérer le cas où l'entité n'existe pas
+        }
+    }
+
+    @DeleteMapping("/deleteResultat/{id}")
+    public void deleteResultat(@PathVariable Long id) {
+        resultatsRepository.deleteById(id);
     }
 }
