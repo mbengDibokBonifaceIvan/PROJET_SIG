@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/utilisateurs")
+@CrossOrigin("http://localhost:3000") //Pour connecter le backend au frontend
 public class UtilisateursController {
 
     @Autowired

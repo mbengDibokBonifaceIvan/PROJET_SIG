@@ -9,6 +9,7 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin("http://localhost:3000") //Pour connecter le backend au frontend
 @RequestMapping("/arrondissements")
 public class ArrondissementsController {
 
